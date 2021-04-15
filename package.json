@@ -2,7 +2,7 @@
     "name": "php-helper",
     "displayName": "php-helper",
     "description": "Some php helpful commands",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "publisher": "hector",
     "engines": {
         "vscode": "^1.30.0"
@@ -12,7 +12,8 @@
     ],
     "activationEvents": [
         "onCommand:extension.PHPVarsToJSON",
-        "onCommand:extension.JSONToPHPVars"
+        "onCommand:extension.JSONToPHPVars",
+        "onCommand:extension.PHPDocToMarkdown"
     ],
     "main": "./extension",
     "contributes": {
@@ -24,6 +25,10 @@
             {
                 "command": "extension.JSONToPHPVars",
                 "title": "JSON转PHPVars"
+            },
+            {
+                "command": "extension.PHPDocToMarkdown",
+                "title": "PHPDoc转Markdown"
             }
         ],
         "menus": {
@@ -31,12 +36,17 @@
                 {
                     "when": "editorFocus",
                     "command": "extension.PHPVarsToJSON",
-                    "group": "PHPVars转JSON"
+                    "group": "PHPHelper"
                 },
                 {
                     "when": "editorFocus",
                     "command": "extension.JSONToPHPVars",
-                    "group": "JSON转PHPVars"
+                    "group": "PHPHelper"
+                },
+                {
+                    "when": "editorFocus",
+                    "command": "extension.PHPDocToMarkdown",
+                    "group": "PHPHelper"
                 }
             ]
         }
