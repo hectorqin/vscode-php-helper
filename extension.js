@@ -4,6 +4,17 @@ const vscode = require('vscode');
 const fs = require("fs");
 const { exec } = require('child_process');
 
+const showOutputMessage = (content, language) => {
+    return vscode.workspace.openTextDocument({
+        content: content,
+        language: language
+    }).then((doc)=>{
+        vscode.window.showTextDocument(doc, {
+            preview: true
+        })
+    })
+}
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
@@ -29,13 +40,20 @@ function activate(context) {
         }
         let phpContent = `<?php
         $var = ${content};
-        echo json_encode($var, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        echo json_encode($var, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         `;
         fs.writeFileSync('/tmp/__php-helper-tmp.php', phpContent);
 
         exec('php /tmp/__php-helper-tmp.php', (err, stdout, stderr) => {
             if(err) {
                 vscode.window.showInformationMessage(stderr);
+                return;
+            }
+            console.log(stdout);
+            if (stdout.length >= 500) {
+                showOutputMessage(stdout, 'json').then(() => {
+                    vscode.commands.executeCommand('editor.action.selectAll')
+                })
                 return;
             }
             vscode.window.showInformationMessage(stdout, '复制').then((value)=>{
@@ -69,6 +87,12 @@ function activate(context) {
         exec('php /tmp/__php-helper-tmp.php', (err, stdout, stderr) => {
             if(err) {
                 vscode.window.showInformationMessage(stderr);
+                return;
+            }
+            if (stdout.length >= 500) {
+                showOutputMessage(stdout, 'php').then(() => {
+                    vscode.commands.executeCommand('editor.action.selectAll')
+                })
                 return;
             }
             vscode.window.showInformationMessage(stdout, '复制').then((value)=>{
