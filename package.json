@@ -2,7 +2,7 @@
     "name": "php-helper",
     "displayName": "php-helper",
     "description": "Some php helpful commands",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "publisher": "hector",
     "engines": {
         "vscode": "^1.30.0"
